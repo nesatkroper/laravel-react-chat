@@ -8,9 +8,6 @@ const ContentSender = () => {
   const [msg, setMsg] = useState("");
   const [type, setType] = useState(false);
 
-  // if (msg !== "") setType(true);
-  // else setType(false);
-
   const openDialog = () => {
     document.getElementById("selectFile")?.click();
   };
@@ -26,11 +23,14 @@ const ContentSender = () => {
             <Paperclip />
           </Button>
           <Input
-            onChange={(e) => setMsg(e.target.value)}
+            onChange={(e) => {
+              setMsg(e.target.value);
+              setType(true);
+              if (e.target.value == "") setType(false);
+            }}
             className="min-w-[350px] border-none"
             placeholder="White a message..."
           />
-
           <Button className="bg-background text-dark hover:bg-gray-100 px-2 ms-2">
             {type ? <SendHorizonal /> : <Smile />}
           </Button>
