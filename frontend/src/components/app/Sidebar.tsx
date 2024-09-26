@@ -15,9 +15,14 @@ const Sidebar = () => {
     <React.Fragment>
       <Sheet>
         <SheetTrigger>
-          <Button>
-            <AlignJustify className="w-5 h-5" />
-          </Button>
+          <div
+            className="flex bg-gray-400 justify-center w-[45px] h-[100vh]
+          "
+          >
+            <Button className="px-3 mt-2">
+              <AlignJustify className="w-4 h-4" />
+            </Button>
+          </div>
         </SheetTrigger>
         <SheetContent side={"left"} className="w-[300px]">
           <SheetHeader>

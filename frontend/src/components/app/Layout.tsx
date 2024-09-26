@@ -1,11 +1,16 @@
+import React from "react";
 import Sidebar from "./Sidebar";
+import Footer from "./Footer";
 
-const Layout = () => {
+export const Layout = (props) => {
+  const { children } = props;
   return (
-    <div>
-      <Sidebar />
-    </div>
+    <React.Fragment>
+      <div className="flex">
+        <Sidebar />
+        {children}
+        <Footer />
+      </div>
+    </React.Fragment>
   );
 };
-
-export default Layout;
