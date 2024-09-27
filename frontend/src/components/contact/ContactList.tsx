@@ -6,7 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 const ContactList = () => {
   return (
     <React.Fragment>
-      <ScrollArea className="h-[86vh] w-full rounded-md border p-2">
+      <ScrollArea className="h-[86vh] w-full rounded-md p-1">
         <Card className="mt-1">
           <CardContent className="p-2">
             <div className="flex">

@@ -8,19 +8,35 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const Signup = () => {
   const [show, setShow] = useState(false);
+  const [auth, setAuth] = useState({
+    username: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setAuth({ ...auth, [e.target.name]: [e.target.value] });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(auth);
+  };
 
   const handleShowPassword = () => {
     setShow(!show);
   };
 
-  const handleChange = () => {};
-
   return (
     <React.Fragment>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="grid w-full max-w-sm items-center gap-1.5 my-4">
           <Label htmlFor="name">Name</Label>
-          <Input type="text" id="name" placeholder="Name" />
+          <Input
+            onChange={handleChange}
+            type="text"
+            id="name"
+            placeholder="Name"
+          />
         </div>
         <div className="grid w-full max-w-sm items-center gap-1.5 my-4">
           <Label htmlFor="gender">Gender</Label>
@@ -37,7 +53,12 @@ const Signup = () => {
         </div>
         <div className="grid w-full max-w-sm items-center gap-1.5 my-4">
           <Label htmlFor="username">Username</Label>
-          <Input type="text" id="username" placeholder="Username" />
+          <Input
+            onChange={handleChange}
+            type="text"
+            id="username"
+            placeholder="Username"
+          />
         </div>
         <div className="grid w-full max-w-sm items-center gap-1.5 my-4">
           <Label htmlFor="email">Email</Label>
@@ -68,7 +89,7 @@ const Signup = () => {
             {show ? "Hide" : "Show"} Password
           </label>
         </div>
-        <Button className="w-full">
+        <Button type="submit" className="w-full">
           {/* <LogInIcon className="float-left" /> */}
           Sign Up
         </Button>

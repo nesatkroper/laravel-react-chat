@@ -15,7 +15,7 @@ export const AddContact = () => {
     <React.Fragment>
       <Dialog>
         <DialogTrigger>
-          <Button className="px-2">
+          <Button className="px-2 shadow-xl">
             <Plus />
           </Button>
         </DialogTrigger>

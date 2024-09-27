@@ -7,7 +7,7 @@ import axios from "@/config/axios";
 
 const Signin = () => {
   const [show, setShow] = useState(false);
-  const [user, setUser] = useState({
+  const [auth, setAuth] = useState({
     username: "",
     password: "",
   });
@@ -18,35 +18,36 @@ const Signin = () => {
     setShow(!show);
   };
 
+  const handleChange = (e) => {
+    setAuth({ ...auth, [e.target.name]: [e.target.value] });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post("/add", {
-      username: user.username,
-      password: user.password,
-    });
+    console.log(auth);
+    // await axios.post("/add", {
+    //   username: user.username,
+    //   password: user.password,
+    // });
   };
   return (
     <React.Fragment>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="grid w-full max-w-sm items-center gap-1.5 my-4">
           <Label htmlFor="username">Username</Label>
           <Input
-            onChange={(e) => {
-              setUser({ ...user, username: e.target.value });
-            }}
+            onChange={(e) => handleChange(e)}
             type="text"
-            id="username"
+            name="username"
             placeholder="Username"
           />
         </div>
         <div className="grid w-full max-w-sm items-center gap-1.5 mb-2">
           <Label htmlFor="password">Password</Label>
           <Input
-            onChange={(e) => {
-              setUser({ ...user, password: e.target.value });
-            }}
+            onChange={(e) => handleChange(e)}
             type={show ? "text" : "password"}
-            id="password"
+            name="password"
             placeholder="Password"
           />
         </div>
@@ -59,7 +60,7 @@ const Signin = () => {
             {show ? "Hide" : "Show"} Password
           </label>
         </div>
-        <Button onClick={handleSubmit} type="submit" className="w-full">
+        <Button type="submit" className="w-full">
           Sign In
         </Button>
       </form>

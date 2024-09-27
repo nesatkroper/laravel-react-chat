@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Paperclip, SendHorizonal, Smile } from "lucide-react";
+import { Mic, Paperclip, SendHorizonal, Smile } from "lucide-react";
 
 const ContentSender = () => {
   const [msg, setMsg] = useState("");
@@ -33,6 +33,9 @@ const ContentSender = () => {
           />
           <Button className="bg-background text-dark hover:bg-gray-100 px-2 ms-2">
             {type ? <SendHorizonal /> : <Smile />}
+          </Button>
+          <Button className="bg-background text-dark hover:bg-gray-100 px-2 ms-2">
+            <Mic />
           </Button>
         </CardContent>
       </Card>

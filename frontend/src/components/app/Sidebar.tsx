@@ -16,7 +16,7 @@ const Sidebar = () => {
       <Sheet>
         <SheetTrigger>
           <div
-            className="flex bg-gray-400 justify-center w-[45px] h-[100vh]
+            className="flex bg-gray-300 justify-center w-[45px] h-[100vh]
           "
           >
             <Button className="px-3 mt-2">
