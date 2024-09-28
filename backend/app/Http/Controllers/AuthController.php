@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\File;
 
 class AuthController extends Controller
 {
@@ -36,6 +36,7 @@ class AuthController extends Controller
                 'message' => "User registered successfully",
                 'token' => $token,
                 'token_type' => 'Bearer',
+                'user' => $user
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -68,19 +69,22 @@ class AuthController extends Controller
                 'message' => 'User login successfully',
                 'token' => $token,
                 'token_type' => 'Bearer',
+                'user' => $user
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
                 'message' => $e->getMessage(),
-            ], 500);
+            ],);
         }
     }
 
     public function logout(Request $request)
     {
         try {
-            $request->user()->token()->delete();
+            // $request->user()->token()->delete();
+            $id = $request->id;
+            DB::table('personal_access_tokens')->where('tokenable_id', $id)->delete();
 
             return response()->json([
                 'message' => 'User logged out successfully.'
@@ -88,7 +92,7 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => $e->getMessage(),
-            ], 500);
+            ]);
         }
     }
 
@@ -103,7 +107,7 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => $e->getMessage(),
-            ], 500);
+            ]);
         }
     }
 }
