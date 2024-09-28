@@ -14,17 +14,17 @@ class AuthController extends Controller
     {
         try {
             $valid = $request->validate([
-                'name' => 'required|string|max:50',
+                'name' => 'required|max:50',
                 'gender' => 'required',
-                'username' => 'required|string|max:20|unique:users',
-                'email' => 'required|string|max:255|unique:users',
-                'password' => 'required|string|min:4',
+                'username' => 'required|max:20|unique:users',
+                'email' => 'required|max:255|unique:users',
+                'password' => 'required|min:4',
             ]);
 
             $user = User::create([
                 'name' => $valid['name'],
                 'gender' => $valid['gender'],
-                'username' => $valid['username'],
+                'username' => '@' . $valid['username'],
                 'email' => $valid['email'],
                 'password' => Hash::make($valid['password']),
             ]);
@@ -32,16 +32,16 @@ class AuthController extends Controller
             $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json([
-                'status' => 'success',
+                'status' => true,
                 'message' => "User registered successfully",
-                'access_token' => $token,
+                'token' => $token,
                 'token_type' => 'Bearer',
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => false,
                 'message' => $e->getMessage(),
-            ], 500);
+            ]);
         }
     }
 
@@ -49,8 +49,8 @@ class AuthController extends Controller
     {
         try {
             $valid = $request->validate([
-                'username' => 'required|string',
-                'password' => 'required|string',
+                'username' => 'required',
+                'password' => 'required',
             ]);
 
             $user = User::where('username', '=', '@' . $valid['username'])->first();
@@ -64,14 +64,14 @@ class AuthController extends Controller
             $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json([
-                'status' => 'success',
+                'status' => true,
                 'message' => 'User login successfully',
-                'access_token' => $token,
+                'token' => $token,
                 'token_type' => 'Bearer',
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
+                'status' => false,
                 'message' => $e->getMessage(),
             ], 500);
         }
@@ -87,7 +87,6 @@ class AuthController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => 'error',
                 'message' => $e->getMessage(),
             ], 500);
         }
@@ -103,7 +102,6 @@ class AuthController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'status' => false,
                 'message' => $e->getMessage(),
             ], 500);
         }

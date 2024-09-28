@@ -1,25 +1,43 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-// import { LogInIcon } from "lucide-react";
+import axiosInstance from "@/config/axios";
+import { useNavigate } from "react-router-dom";
+import Auth from "../Auth";
+
+interface Auth {
+  name: string;
+  gender: string;
+  username: string;
+  email: string;
+  password: string;
+}
 
 const Signup = () => {
   const [show, setShow] = useState(false);
-  const [auth, setAuth] = useState({
-    username: "",
-    password: "",
-  });
+  const navigate = useNavigate();
+  const [auth, setAuth] = useState(Auth);
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setAuth({ ...auth, [e.target.name]: [e.target.value] });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(auth);
+
+    try {
+      const response = await axiosInstance.post("/register", auth);
+      console.log(response.data);
+      if (response.data.status) {
+        localStorage.setItem("token", response.data.token);
+        navigate("/");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleShowPassword = () => {
@@ -30,54 +48,64 @@ const Signup = () => {
     <React.Fragment>
       <form onSubmit={handleSubmit}>
         <div className="grid w-full max-w-sm items-center gap-1.5 my-4">
-          <Label htmlFor="name">Name</Label>
+          <Label htmlFor="name">Name*</Label>
           <Input
-            onChange={handleChange}
+            onChange={(e) => handleChange(e)}
             type="text"
-            id="name"
-            placeholder="Name"
+            name="name"
+            placeholder="Jonh Cena"
+            required
           />
         </div>
         <div className="grid w-full max-w-sm items-center gap-1.5 my-4">
-          <Label htmlFor="gender">Gender</Label>
-          <RadioGroup defaultValue="male" className="flex flex-row">
+          <Label htmlFor="gender">Gender*</Label>
+          <RadioGroup
+            onValueChange={(value) =>
+              handleChange({ target: { name: "gender", value } })
+            }
+            name="gender"
+            defaultValue="male"
+            className="flex flex-row"
+            required
+          >
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="male" id="male" />
               <Label htmlFor="male">Male</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="female" id="Female" />
+              <RadioGroupItem value="female" id="female" />
               <Label htmlFor="female">Female</Label>
             </div>
           </RadioGroup>
         </div>
         <div className="grid w-full max-w-sm items-center gap-1.5 my-4">
-          <Label htmlFor="username">Username</Label>
+          <Label htmlFor="username">Username*</Label>
           <Input
-            onChange={handleChange}
+            onChange={(e) => handleChange(e)}
             type="text"
-            id="username"
-            placeholder="Username"
+            name="username"
+            placeholder="@jonhcena"
+            required
           />
         </div>
         <div className="grid w-full max-w-sm items-center gap-1.5 my-4">
-          <Label htmlFor="email">Email</Label>
-          <Input type="email" id="email" placeholder="Email" />
-        </div>
-        <div className="grid w-full max-w-sm items-center gap-1.5 mb-2">
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="email">Email*</Label>
           <Input
-            type={show ? "text" : "password"}
-            id="password"
-            placeholder="Password"
+            onChange={(e) => handleChange(e)}
+            type="email"
+            name="email"
+            placeholder="jonhcena@example.com"
+            required
           />
         </div>
         <div className="grid w-full max-w-sm items-center gap-1.5 mb-2">
-          <Label htmlFor="c_password">Confirm Password</Label>
+          <Label htmlFor="password">Password*</Label>
           <Input
+            onChange={(e) => handleChange(e)}
             type={show ? "text" : "password"}
-            id="c_password"
-            placeholder="Confirm Password"
+            name="password"
+            placeholder="Password"
+            required
           />
         </div>
         <div className="flex items-center space-x-2 mb-4">
@@ -90,7 +118,6 @@ const Signup = () => {
           </label>
         </div>
         <Button type="submit" className="w-full">
-          {/* <LogInIcon className="float-left" /> */}
           Sign Up
         </Button>
       </form>
