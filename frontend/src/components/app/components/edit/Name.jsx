@@ -8,19 +8,29 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axiosInstance from "@/config/axios";
+import { fetchUser } from "@/app/user/userSlice";
+import { useSelector, useDispatch } from "react-redux";
 
-const Name = (props) => {
-  const { oldname } = props;
-  const [name, setName] = useState(oldname);
+const Name = () => {
+  const dispatch = useDispatch();
+  const store = useSelector((state) => state.user?.data);
+  const [name, setName] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     await axiosInstance.post("/user/name", {
-      id: localStorage.getItem("id"),
+      id: store.usr_id,
       name: name,
     });
+    dispatch(fetchUser());
   };
+
+  useEffect(() => {
+    dispatch(fetchUser());
+    setName(store.name);
+  }, []);
   return (
     <>
       <AlertDialogContent className="w-[350px]">
@@ -33,10 +43,10 @@ const Name = (props) => {
                 onChange={(e) => {
                   setName(e.target.value);
                 }}
+                value={name}
                 type="text"
                 id="name"
-                placeholder="Email"
-                value={name}
+                placeholder="Jonh Cena"
               />
             </div>
           </AlertDialogHeader>

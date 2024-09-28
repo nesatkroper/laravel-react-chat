@@ -41,6 +41,7 @@ const Signup = () => {
 
     if (response.data.status) {
       setToken(response.data.token);
+      localStorage.setItem("id", response.data.usr_id);
       navigate("/", { replace: true });
     }
   };

@@ -13,6 +13,8 @@ const ContentSender = () => {
   };
   return (
     <React.Fragment>
+      {/*  */}
+      {msg}
       <Card className="absolute bottom-[60px] ">
         <CardContent className="p-1 flex">
           <Input type="file" id="selectFile" className="hidden" />

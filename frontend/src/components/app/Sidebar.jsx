@@ -1,6 +1,6 @@
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AlignJustify } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Logout from "./components/Logout";
@@ -10,15 +10,13 @@ import { useSelector, useDispatch } from "react-redux";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
+  const store = useSelector((state) => state.user?.data);
 
   useEffect(() => {
     dispatch(fetchUser());
   }, []);
-  const user = useSelector((state) => state.user);
-  console.log(user.user.name);
-
   return (
-    <React.Fragment>
+    <>
       <Sheet>
         <SheetTrigger>
           <div
@@ -40,20 +38,13 @@ const Sidebar = () => {
                   className="w-[70px] h-[70px]"
                 />
                 <Separator className="my-3" />
-                <p className="font-bold text-lg">{user.name}</p>
-                <p className="">+855 {user.phone}</p>
+                <p className="font-bold text-lg">{store.name}</p>
+                <p className="">+855 {store.phone}</p>
               </div>
               <Separator className="my-3" />
 
               {/* profile list button  */}
-              <ProfileButtonList
-                // profile={profile}
-                bio={user.bio}
-                name={user.name}
-                gender={user.gender}
-                username={user.username}
-                phone={user.phone}
-              />
+              <ProfileButtonList />
             </div>
 
             {/* Logout components */}
@@ -61,7 +52,7 @@ const Sidebar = () => {
           </div>
         </SheetContent>
       </Sheet>
-    </React.Fragment>
+    </>
   );
 };
 

@@ -7,9 +7,12 @@ const Content = () => {
   return (
     <React.Fragment>
       <div className="flex flex-col w-full h-full">
+        {/*  */}
         <ContentHeader />
         <div className="p-2">
+          {/*  */}
           <ContentBody />
+          {/*  */}
           <ContentSender />
         </div>
       </div>

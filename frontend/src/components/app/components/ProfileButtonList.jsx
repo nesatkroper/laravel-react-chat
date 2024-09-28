@@ -13,8 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import AccountSetting from "./AccountSetting";
 
-const ProfileButtonList = (props) => {
-  const { profile, name, username, email, gender, phone, bio } = props;
+const ProfileButtonList = () => {
   return (
     <>
       <Button className="bg-background hover:bg-gray-200 text-dark w-full justify-start">
@@ -49,15 +48,7 @@ const ProfileButtonList = (props) => {
           </Button>
         </DialogTrigger>
         {/*  */}
-        <AccountSetting
-          profile={profile}
-          name={name}
-          gender={gender}
-          username={username}
-          email={email}
-          phone={phone}
-          bio={bio}
-        />
+        <AccountSetting />
       </Dialog>
 
       <Button className="bg-background hover:bg-gray-200 text-dark w-full justify-between flex">

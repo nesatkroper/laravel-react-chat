@@ -36,12 +36,12 @@ const Signin = () => {
         console.error(err);
       });
 
-    console.log(auth);
+    console.log(response);
 
     if (response.data.status) {
       setToken(response.data.token);
-      localStorage.setItem("id", response.data.user.usr_id);
       localStorage.setItem("baseUrl", "http://localhost:8000/");
+      localStorage.setItem("id", response.data.user.usr_id);
       navigate("/", { replace: true });
     }
   };

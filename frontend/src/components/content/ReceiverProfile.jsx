@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   DialogContent,
   DialogHeader,
@@ -17,9 +17,15 @@ import {
   Users,
 } from "lucide-react";
 import AlertBlock from "./components/AlertBlock";
+import { fetchUser } from "@/app/user/userSlice";
+import { useSelector, useDispatch } from "react-redux";
 
-const ReceiverProfile = (props) => {
-  const { profile, name, phone } = props;
+const ReceiverProfile = () => {
+  const dispatch = useDispatch();
+  const store = useSelector((state) => state.user?.data);
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, []);
   return (
     <React.Fragment>
       <DialogContent className="w-[400px] ">
@@ -28,14 +34,10 @@ const ReceiverProfile = (props) => {
         </DialogHeader>
         <Separator />
         <div className="flex">
-          <img
-            src={profile}
-            alt="profile image"
-            className="w-[70px] h-[70px]"
-          />
+          <img alt="profile image" className="w-[70px] h-[70px]" />
           <div className="flex flex-col ms-3">
-            <p className="font-bold text-lg">{name}</p>
-            <p className="">+855 {phone}</p>
+            <p className="font-bold text-lg">{store.name}</p>
+            <p className="">+855 {store.phone}</p>
           </div>
         </div>
         <Separator />

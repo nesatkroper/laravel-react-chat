@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import axiosInstance from "@/config/axios";
+import React, { useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Ellipsis, Phone, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,38 +9,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import ReceiverProfile from "./ReceiverProfile.jsx";
 import ReceiverOption from "./ReceiverOption.jsx";
+import { fetchUser } from "@/app/user/userSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 const ContentHeader = () => {
-  const [user, setUser] = useState({
-    id: localStorage.getItem("id"),
-    baseUrl: localStorage.getItem("baseUrl"),
-    name: "",
-    username: "",
-    phone: "",
-    photo: "",
-    gender: "",
-    bio: "",
-  });
-
-  const getUser = async () => {
-    const res = await axiosInstance.get("/user").catch((error) => {
-      console.log(error);
-    });
-
-    setUser({
-      name: res.data.name,
-      username: res.data.username,
-      phone: res.data.phone,
-      photo: res.data.photo,
-      gender: res.data.gender,
-      bio: res.data.bio,
-    });
-  };
-
-  const profile = `${user.baseUrl}${user.photo}`;
-
+  const dispatch = useDispatch();
+  const store = useSelector((state) => state.user?.data);
   useEffect(() => {
-    getUser();
+    dispatch(fetchUser());
   }, []);
   return (
     <React.Fragment>
@@ -50,20 +25,17 @@ const ContentHeader = () => {
           <DialogTrigger>
             <div className="flex">
               <Avatar>
-                <AvatarImage src={profile} />
+                <AvatarImage />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <div className="flex flex-col ms-2 ">
-                <p className="font-bold text-sm">{user.name}</p>
-                <p className="text-gray-600 text-xs">{user.phone}</p>
+                <p className="font-bold text-sm">{store.name}</p>
+                <p className="text-gray-600 text-xs">{store.phone}</p>
               </div>
             </div>
           </DialogTrigger>
-          <ReceiverProfile
-            profile={profile}
-            name={user.name}
-            phone={user.phone}
-          />
+          {/*  */}
+          <ReceiverProfile />
         </Dialog>
         <div className="flex gap-1 p">
           <Button className="bg-background text-dark px-2 hover:bg-gray-200">

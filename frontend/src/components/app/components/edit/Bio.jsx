@@ -8,20 +8,29 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axiosInstance from "@/config/axios";
+import { fetchUser } from "@/app/user/userSlice";
+import { useSelector, useDispatch } from "react-redux";
 
-const Bio = (props) => {
-  const { oldbio } = props;
-  const [bio, setBio] = useState(oldbio);
+const Bio = () => {
+  const dispatch = useDispatch();
+  const store = useSelector((state) => state.user?.data);
+  const [bio, setBio] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     await axiosInstance.post("/user/bio", {
-      id: localStorage.getItem("id"),
+      id: store.usr_id,
       bio: bio,
     });
+    dispatch(fetchUser());
   };
 
+  useEffect(() => {
+    dispatch(fetchUser());
+    setBio(store.bio);
+  }, []);
   return (
     <>
       <AlertDialogContent className="w-[350px]">
@@ -36,7 +45,6 @@ const Bio = (props) => {
                 placeholder="Say something ..."
               />
             </div>
-            {bio}
           </AlertDialogHeader>
           <AlertDialogFooter className="mt-3">
             <AlertDialogCancel type="button">Cancel</AlertDialogCancel>

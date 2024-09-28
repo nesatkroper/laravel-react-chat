@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   DialogContent,
   DialogHeader,
@@ -13,20 +12,27 @@ import Username from "./edit/Username";
 import PhoneEdit from "./edit/Phone";
 import Bio from "./edit/Bio";
 import DOB from "./edit/DOB";
+import { fetchUser } from "@/app/user/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
 
-const AccountSetting = (props) => {
-  const { profile, name, username, email, gender, phone, dob, bio } = props;
+const AccountSetting = () => {
+  const dispatch = useDispatch();
+  const store = useSelector((state) => state.user?.data);
 
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, []);
   return (
     <DialogContent className="w-[400px] ">
       <DialogHeader>
         <DialogTitle>Settings</DialogTitle>
       </DialogHeader>
       <div className="flex flex-col items-center ">
-        <img src={profile} alt="profile image" className="w-[70px] h-[70px]" />
+        <img alt="profile image" className="w-[70px] h-[70px]" />
         <div className="flex flex-col ms-3">
-          <p className="font-bold text-lg">{name}</p>
-          <p className="">+855 {phone}</p>
+          <p className="font-bold text-lg">{store.name}</p>
+          <p className="">+855 {store.phone}</p>
         </div>
       </div>
       <div className="flex flex-col">
@@ -34,11 +40,11 @@ const AccountSetting = (props) => {
 
         <AlertDialog>
           <AlertDialogTrigger>
-            <Button className="bg-background hover:bg-gray-200 flex justify-start text-dark h-full text-wrap text-start ">
-              {bio}
+            <Button className="bg-background hover:bg-gray-200 flex justify-start text-dark h-full text-wrap text-start w-full">
+              {store.bio}
             </Button>
           </AlertDialogTrigger>
-          <Bio oldbio={bio} />
+          <Bio />
         </AlertDialog>
         <Separator className="my-2" />
         <div className="flex flex-col">
@@ -46,17 +52,17 @@ const AccountSetting = (props) => {
             <AlertDialogTrigger>
               <Button className="bg-background hover:bg-gray-200 flex justify-start text-dark my-1 w-full">
                 <CircleUser className="me-4" />
-                {name}
+                {store.name}
               </Button>
             </AlertDialogTrigger>
             {/*  */}
-            <Name oldname={name} />
+            <Name />
           </AlertDialog>
           <AlertDialog>
             <AlertDialogTrigger>
               <Button className="bg-background hover:bg-gray-200 flex justify-start text-dark my-1 w-full">
                 <Phone className="me-4" />
-                {phone}
+                {store.phone}
               </Button>
             </AlertDialogTrigger>
             <PhoneEdit />
@@ -65,7 +71,7 @@ const AccountSetting = (props) => {
             <AlertDialogTrigger>
               <Button className="bg-background hover:bg-gray-200 flex justify-start text-dark my-1 w-full">
                 <AtSign className="me-4" />
-                {username}
+                {store.username}
               </Button>
             </AlertDialogTrigger>
             <Username />
@@ -77,7 +83,7 @@ const AccountSetting = (props) => {
           <AlertDialogTrigger>
             <Button className="bg-background hover:bg-gray-200 flex justify-start text-dark my-1 w-full">
               <CalendarDays className="me-4" />
-              {dob}
+              {/* {user.dob} */}
             </Button>
           </AlertDialogTrigger>
           <DOB />

@@ -10,7 +10,7 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     loading: false,
-    user: null,
+    data: [""],
     error: false,
   },
   extraReducers: (builder) => {
@@ -19,18 +19,13 @@ const userSlice = createSlice({
     });
     builder.addCase(fetchUser.fulfilled, (state, action) => {
       state.loading = false;
-      state.user = action.payload;
+      state.data = action.payload;
     });
     builder.addCase(fetchUser.rejected, (state, action) => {
       state.error = true;
     });
   },
-  reducers: {
-    // getUser: async (state) => {
-    //   const res = await axiosInstance.get("/user");
-    //   state.user = res.data.data;
-    // },
-  },
+  reducers: {},
 });
 
 export const { getUser } = userSlice.actions;

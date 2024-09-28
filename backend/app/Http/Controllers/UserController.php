@@ -67,4 +67,24 @@ class UserController extends Controller
             ]);
         }
     }
+    public function editPhone(Request $request)
+    {
+        try {
+            $id = $request->id;
+            $edit = User::findOrFail($id);
+            $edit->update([
+                'phone' =>  $request->phone
+            ]);
+            return response()->json([
+                'status' => true,
+                'data' => $edit,
+                'message' => "Successfully"
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
 }
